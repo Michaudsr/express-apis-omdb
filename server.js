@@ -22,25 +22,25 @@ app.use(ejsLayouts);
 app.use(require('morgan')('dev'));
 
 // Routes
-app.get('/sample', (req, res)=>{
-  var qs = {
-    params: {
-      s: 'star wars',
-      apikey: API_KEY
-    }
-  };
-  axios.get('http://www.omdbapi.com', qs)
-  .then((response)=>{
-    console.log(response.data)
-    let episodes = response.data.Search
-    // setting a variable to our data
-    res.render('home', {episodes})
+// app.get('/sample', (req, res)=>{
+//   var qs = {
+//     params: {
+//       s: 'star wars',
+//       apikey: API_KEY
+//     }
+//   };
+//   axios.get('http://www.omdbapi.com', qs)
+//   .then((response)=>{
+//     console.log(response.data)
+//     let episodes = response.data.Search
+//     // setting a variable to our data
+//     res.render('home', { data: episodes})
     
-  })
-  .catch(err => {
-    console.log(err)
-})
-});
+//   })
+//   .catch(err => {
+//     console.log(err)
+// })
+// });
 
 app.get('/', (req, res)=>{
   res.render('index')
@@ -49,19 +49,20 @@ app.get('/', (req, res)=>{
 
 
 app.get('/results', (req, res)=>{
-  console.log('req.query', req.query)
-  var qs = {
+  let search = req.query.q;
+  let qs = {
     params: {
-      s: req.query.q,
+      s: search,
       apikey: API_KEY
     }
   };
   axios.get('http://www.omdbapi.com', qs)
   .then((response)=>{
     console.log(response.data)
-    let episodes = response.data.Search
+    let movies = response.data.Search;
+    console.log(movies);
     // setting a variable to our data
-    res.render('results', {episodes})
+    res.render('results', { data: movies})
     
   })
   .catch(err => {
@@ -69,21 +70,27 @@ app.get('/results', (req, res)=>{
 })
 });
 
-// app.get('/episodes/:movie_id', (req, res)=>{
-//   let imdbId = req.params.movie_id;
-//   let qs = {
-//     params: {
-//       i: imdbId,
-//       APIKey : API_KEY
-//     }
-//   }
-//   Axios.get('http://www.omdbapi.com', qs)
-//   .then(response => {
-//     let movieData = response.data;
+app.get('/movies/:movie_id', (req, res) => {
+  let imdbId = req.params.movie_id;
+  let qs = {
+    params: {
+      i: imdbId,
+      apikey: API_KEY
+    }
+  };
+  axios.get('https://www.omdbapi.com', qs)
+  .then(response => {
+    let movieData = response.data;
+    
 
-//     res.render('detail', { data: movieData });
-//   })
-// })
+    res.render('detail', { data: movieData });
+  })
+  .catch(error => {
+    console.log('Error', error);
+  });
+});
+
+
 
 
 
