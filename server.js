@@ -4,6 +4,7 @@ const ejsLayouts = require('express-ejs-layouts');
 const app = express();
 const axios = require('axios');
 const { default: Axios } = require('axios');
+const { Router } = require('express');
 // const url = require('url')
 // const querystring = require('querystring')
 // const results = require('/results')
@@ -17,9 +18,10 @@ app.use(express.static('static'));
 app.use(express.urlencoded({ extended: false }));
 // Enables EJS Layouts middleware
 app.use(ejsLayouts);
-
+app.use('/fave', require('./routes/fave'));
 // Adds some logging to each request
 app.use(require('morgan')('dev'));
+// app.use('/faves', requiew('./routes/faves'));
 
 // Routes
 // app.get('/sample', (req, res)=>{
@@ -90,13 +92,38 @@ app.get('/movies/:movie_id', (req, res) => {
   });
 });
 
+// app.post('/faves', async (req, res) => {
+//   try {
+//     await db.faves.findOrCreate({
+//       where:{
+//         name: req.body.name
+//       },
+//     })
+//     res.redirect('/faves')
+//   } catch (err){
+//     console.log('Error', err)
+//   }
+// })
 
-
+// Router.get('/faves', (req, res)=>{
+//   db.fave.findAll ({
+//     where: {
+//       name: req.body.name
+//     }
+//   })
+//   .then(fave => {
+//     res.render('movies', {movies})
+//   })
+// })
 
 
 
 
 // The app.listen function returns a server handle
+const port = process.env.PORT || 3000;
+// function listenForPort( {
+//   console.log(`Server is running on port ${port}`);
+// })
 var server = app.listen(process.env.PORT || 3000);
 
 // We can export this server to other servers like this

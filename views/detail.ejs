@@ -4,11 +4,24 @@
 <div>
     <h1><%= data.Title %></h1>
     <img src="<%= data.Poster %>" alt="Movie Poster">
-    <h3>Director: <%= data.Director %></h3>
+    <% if (data.Director){ %>
+      <h3>Director: <%= data.Director %></h3>
+
+  <%  } else { %>
+    <h3>There is no director listed.</h3>
+ <% } %>
     <h3>Plot: <% data.Plot %></h3>
     <% if (data.Ratings[1]) { %>
         <h3>Rotten Tomatoes Rating: <%= data.Ratings[1].Value %></h3>
 
   <%  } %>
     
+</div>
+
+
+<div>
+  <form method='POST' action="/fave"></form>
+  <input hidden type="text" name="title" value='<%= data.Title%>'> 
+  <input hidden type="text" name="imdbid" value='<%= data.imdbId%>'>
+  <button class='faves' type='submit'>Faves</button>
 </div>
